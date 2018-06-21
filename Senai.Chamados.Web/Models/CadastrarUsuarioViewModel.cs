@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
+
 namespace Senai.Chamados.Web.Models
 {
     public class CadastrarUsuarioViewModel
