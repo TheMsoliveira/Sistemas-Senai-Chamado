@@ -1,4 +1,5 @@
 ﻿using Senai.Chamados.Web.Models;
+using Senai.Chamados.Web.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,19 @@ namespace Senai.Chamados.Web.Controllers
         public ActionResult Login()
         {
             
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(LoginViewModel login)
+        {
+            // verificando se o estado do model é valido
+            if(!ModelState.IsValid)
+            {
+                ViewBag.Erro = "Dados invalidos";
+                return View();
+            }
+            //TODO: efetuar Login
             return View();
         }
         [HttpGet]
