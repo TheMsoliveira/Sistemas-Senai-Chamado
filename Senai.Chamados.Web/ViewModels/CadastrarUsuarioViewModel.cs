@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-
+using System.Web.Mvc;
 
 namespace Senai.Chamados.Web.Models
 {
@@ -28,5 +28,10 @@ namespace Senai.Chamados.Web.Models
         [Required(ErrorMessage = "Informe o campo senha")]
         [DataType(DataType.Password)]
         public string Senha { get; set; }
+        /*select list exibe uma lista de dados --  sempre realizarmos o uso de uma
+         comboBox, necessário usar uma propriedade para lista e outra para captuda de valor*/
+        public SelectList Sexo { get; set; }
+        [Required(ErrorMessage ="Informe o Sexo")]
+        public string  SexoId { get; set; }
     }
 }

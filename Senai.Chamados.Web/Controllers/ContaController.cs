@@ -14,39 +14,89 @@ namespace Senai.Chamados.Web.Controllers
         [HttpGet] /*definindo fomato de requisição*/
         public ActionResult Login()
         {
-            
+
             return View();
         }
 
         [HttpPost]
-        public ActionResult Login(LoginViewModel login)
+        public ActionResult Login(LoginViewModel Login)
         {
             // verificando se o estado do model é valido
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 ViewBag.Erro = "Dados invalidos";
                 return View();
             }
+
+            // Valida Usuário
+            if (Login.Email == "senai@senai.sp" && Login.Senha == "123456")
+            {
+                TempData["Autenticado"] = "Usuário Autenticado";
+                //redireciona para a pagina Home -- para outro controller
+                return RedirectToAction("Index","Home");
+            }
+            else
+            {
+                ViewBag.Autenticado = "Usuario não cadastrado";
+                // envia para pagina Cadastrar Usuário -- para mesmo controller
+                ViewBag.Autenticado = "Usuário não cadastrado";
+            }
+
             //TODO: efetuar Login
-            return View();
+            //return View(); -- passa a não ser util por conta do Validação de Usuário
         }
         [HttpGet]
         public ActionResult CadastrarUsuario()
         {
-            return View();
+            CadastrarUsuarioViewModel objCadastrarUsuario = new CadastrarUsuarioViewModel();
+            //objCadastrarUsuario.Nome = "Madson";
+            //objCadastrarUsuario.Email = "madson@senai.com";
+            objCadastrarUsuario.Sexo = new SelectList(
+            new List<SelectListItem>
+            {
+            new SelectListItem{ Text = "Masculino", Value = "1" },
+            new SelectListItem { Text = "Feminino", Value = "2" },
+            }, "Value", "Text");
+
+            return View(objCadastrarUsuario);
         }
-        
+
         [HttpPost]
         public ActionResult CadastrarUsuario(CadastrarUsuarioViewModel usuario)
         {
+            usuario.Sexo = ListaSexo();
+
             // verificando se o estado do model é valido
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 ViewBag.Erro = "Dados invalidos";
-                return View();
+                return View(usuario);
             }
+
+            #region Exemplo
+            /*necessário retornar a mesma lista no post , pode ser feito dessa forma ou criando um metodo*/
+            //usuario.Sexo= new SelectList(
+            //new List<SelectListItem>
+            //{
+            //new SelectListItem{ Text = "Masculino", Value = "1" },
+            //new SelectListItem { Text = "Feminino", Value = "2" },
+            //}, "Value", "Text");
+            #endregion
+
             //TODO: efetuar cadastro no campo de dados
-            return View();
+            return View(usuario);
+        }
+
+        private SelectList ListaSexo()
+        {
+            return new SelectList(
+            new List<SelectListItem>
+            {
+            new SelectListItem{ Text = "Masculino", Value = "1" },
+            new SelectListItem { Text = "Feminino", Value = "2" },
+            }, "Value", "Text");
+        
+
         }
     }
 }

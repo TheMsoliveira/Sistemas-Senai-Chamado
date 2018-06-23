@@ -1,32 +1,45 @@
-﻿
+﻿@model Senai.Chamados.Web.ViewModels.LoginViewModel
+
 @{
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_LayoutPage.cshtml";
 }
 
-@section Styles
-{
-    <link href="https://getbootstrap.com/docs/4.1/examples/sign-in/signin.css" rel="stylesheet">
+
+@section Styles{
+    <link href="http://getbootstrap.com/docs/4.1/examples/floating-labels/floating-labels.css" rel="stylesheet" />
+
 }
 
 @using (Html.BeginForm("Login", "Conta", FormMethod.Post, new { @Class = "form-signin" }))
-{ 
+{
+    <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+
     <p>@ViewBag.Erro</p>
 
-    <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-    <h1 class="h3 mb-3 font-weight-normal">Preencha os dados abaixo</h1>
-    
-    <label for="inputEmail" class="sr-only">Email address</label>
-    <input type="email" id="inputEmail" class="form-control" placeholder="Digite seu E-mail" required autofocus>
-    
-    <label for="inputPassword" class="sr-only">Password</label>
-    <input type="password" id="inputPassword" class="form-control" placeholder="Digite sua Senha" required>
-    
-<div class="checkbox mb-3">
+    <div class="form-label-group">
+        @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
+        @Html.LabelFor(x => x.Email)
+        @Html.ValidationMessageFor(x => x.Email)
+    </div>
+
+
+    <div class="form-label-group">
+        @* @Html.TextBoxFor(x => x.Senha, new { @class = "form-control", placeHolder = "Informe a senha", required = "true" })  *@
+        <!--  Usar o componente PasswordFor em vez do TextBoxFor para aparecer * -->
+        @Html.PasswordFor(x => x.Senha)
+        @Html.LabelFor(x => x.Senha)
+        @Html.ValidationMessageFor(x => x.Senha)
+    </div>
+    <div class="checkbox mb-3">
         <label>
-            <input type="checkbox" value="remember-me">Permanecer Conectado
+            <input type="checkbox" value="remember-me"> Remember me
         </label>
     </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+
 }
+
