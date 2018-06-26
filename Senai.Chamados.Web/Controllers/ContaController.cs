@@ -1,4 +1,6 @@
-﻿using Senai.Chamados.Web.Models;
+﻿using Senai.Chamados.Data.Contexto;
+using Senai.Chamados.Domain.Entidades;
+using Senai.Chamados.Web.Models;
 using Senai.Chamados.Web.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -39,7 +41,7 @@ namespace Senai.Chamados.Web.Controllers
             {
                 ViewBag.Autenticado = "Usuario não cadastrado";
                 // envia para pagina Cadastrar Usuário -- para mesmo controller
-                ViewBag.Autenticado = "Usuário não cadastrado";
+                return RedirectToAction("CadastrarUsuario");
             }
 
             //TODO: efetuar Login
@@ -83,7 +85,18 @@ namespace Senai.Chamados.Web.Controllers
             //}, "Value", "Text");
             #endregion
 
-            //TODO: efetuar cadastro no campo de dados
+            SenaiChamadosDbContext context = new SenaiChamadosDbContext();
+            UsuarioDomain usuarioBanco = new UsuarioDomain();
+            usuarioBanco.Nome = usuario.Nome;
+            usuarioBanco.Email = usuario.Email;
+            usuarioBanco.Senha = usuario.Senha;
+            usuarioBanco.Telefone = usuario.Telefone;
+            
+            /*Usuarios - necessário add pacote do NuGet*/
+            context.Usuarios.Add(usuarioBanco);
+            context.SaveChanges();
+           
+           
             return View(usuario);
         }
 
