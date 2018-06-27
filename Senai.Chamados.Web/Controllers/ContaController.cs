@@ -85,19 +85,54 @@ namespace Senai.Chamados.Web.Controllers
             //}, "Value", "Text");
             #endregion
 
-            SenaiChamadosDbContext context = new SenaiChamadosDbContext();
+            SenaiChamadosDbContext objContext = new SenaiChamadosDbContext();
             UsuarioDomain usuarioBanco = new UsuarioDomain();
-            usuarioBanco.Nome = usuario.Nome;
-            usuarioBanco.Email = usuario.Email;
-            usuarioBanco.Senha = usuario.Senha;
-            usuarioBanco.Telefone = usuario.Telefone;
+
+            try
+            {
+                /*ao tentar adicionar um novo usuario necessário iniciar o id*/
+                usuarioBanco.Id = Guid.NewGuid();
+
+                usuarioBanco.Nome = usuario.Nome;
+                usuarioBanco.Email = usuario.Email;
+                usuarioBanco.Senha = usuario.Senha;
+                usuarioBanco.Telefone = usuario.Telefone.Replace("(","").Replace(")","").Replace("-","").Replace(" ", "").Trim();
+                /*necessário incluir após a criação da view dos campos*/
+                usuarioBanco.Cpf = usuario.Cpf.Replace(".","").Replace(".", "").Replace(".", "").Replace("-", "");
+                usuario.Cep = usuario.Cep.Replace("-", "");
+                usuarioBanco.Logradouro = usuario.Logradouro;
+                usuarioBanco.Numero = usuario.Numero;
+                usuarioBanco.Complemento = usuario.Complemento;
+                usuarioBanco.Bairro = usuario.Bairro;
+                usuarioBanco.Cidade = usuario.Cidade;
+                usuarioBanco.Estado = usuario.Estado;
+
+                usuarioBanco.DataCriacao = DateTime.Now;
+                usuarioBanco.DataAlteracao = DateTime.Now;
+
+                /*Usuarios - necessário add pacote do NuGet*/
+                objContext.Usuarios.Add(usuarioBanco);
+                objContext.SaveChanges();
+
+                /*temp-data semelhante ao view bag porém é usado para views diferentes*/
+                TempData["Mensagem"] = "Usuario cadastrado";
+                return RedirectToAction("Login");
+              
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Erro = ex.Message;
+                return View(usuario);
+                
+            }
+            finally
+            {
+                objContext = null;
+                usuario = null;
+            }
+           
+           
             
-            /*Usuarios - necessário add pacote do NuGet*/
-            context.Usuarios.Add(usuarioBanco);
-            context.SaveChanges();
-           
-           
-            return View(usuario);
         }
 
         private SelectList ListaSexo()
