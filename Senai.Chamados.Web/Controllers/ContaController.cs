@@ -1,4 +1,6 @@
 ﻿using Senai.Chamados.Data.Contexto;
+using Senai.Chamados.Data.Repositorios;
+using Senai.Chamados.Domain.Contratos;
 using Senai.Chamados.Domain.Entidades;
 using Senai.Chamados.Web.Models;
 using Senai.Chamados.Web.ViewModels;
@@ -30,23 +32,41 @@ namespace Senai.Chamados.Web.Controllers
                 return View();
             }
 
-            // Valida Usuário
-            if (Login.Email == "senai@senai.sp" && Login.Senha == "123456")
+            using (UsuarioRepositorio _repUsuario = new UsuarioRepositorio())
             {
-                TempData["Autenticado"] = "Usuário Autenticado";
-                //redireciona para a pagina Home -- para outro controller
-                return RedirectToAction("Index","Home");
+                UsuarioDomain objUsuario = _repUsuario.Login(Login.Email, Login.Senha);
+
+                if(objUsuario != null)
+                {
+                    return  RedirectToAction("Index", "Usuario");
+                }
+                else
+                {
+                    ViewBag.Erro = "Usuario ou senha Invalida. Tente novamente";
+                    return View(Login);
+                }
+
             }
-            else
-            {
-                ViewBag.Autenticado = "Usuario não cadastrado";
-                // envia para pagina Cadastrar Usuário -- para mesmo controller
-                return RedirectToAction("CadastrarUsuario");
-            }
+            /*trecho de código não é mais necessário uma vez que a validação esta sendo feita acims*/
+            //// Valida Usuário
+            //if (Login.Email == "senai@senai.sp" && Login.Senha == "123456")
+            //{
+            //    TempData["Autenticado"] = "Usuário Autenticado";
+            //    //redireciona para a pagina Home -- para outro controller
+            //    return RedirectToAction("Index", "Home");
+            //}
+            //else
+            //{
+            //    ViewBag.Autenticado = "Usuario não cadastrado";
+            //    // envia para pagina Cadastrar Usuário -- para mesmo controller
+            //    return RedirectToAction("CadastrarUsuario");
+            //}
 
             //TODO: efetuar Login
             //return View(); -- passa a não ser util por conta do Validação de Usuário
         }
+
+
         [HttpGet]
         public ActionResult CadastrarUsuario()
         {
@@ -91,14 +111,14 @@ namespace Senai.Chamados.Web.Controllers
             try
             {
                 /*ao tentar adicionar um novo usuario necessário iniciar o id*/
-                usuarioBanco.Id = Guid.NewGuid();
+                //usuarioBanco.Id = Guid.NewGuid();
 
                 usuarioBanco.Nome = usuario.Nome;
                 usuarioBanco.Email = usuario.Email;
                 usuarioBanco.Senha = usuario.Senha;
-                usuarioBanco.Telefone = usuario.Telefone.Replace("(","").Replace(")","").Replace("-","").Replace(" ", "").Trim();
+                usuarioBanco.Telefone = usuario.Telefone.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "").Trim();
                 /*necessário incluir após a criação da view dos campos*/
-                usuarioBanco.Cpf = usuario.Cpf.Replace(".","").Replace(".", "").Replace(".", "").Replace("-", "");
+                usuarioBanco.Cpf = usuario.Cpf.Replace(".", "").Replace(".", "").Replace(".", "").Replace("-", "");
                 usuario.Cep = usuario.Cep.Replace("-", "");
                 usuarioBanco.Logradouro = usuario.Logradouro;
                 usuarioBanco.Numero = usuario.Numero;
@@ -107,32 +127,38 @@ namespace Senai.Chamados.Web.Controllers
                 usuarioBanco.Cidade = usuario.Cidade;
                 usuarioBanco.Estado = usuario.Estado;
 
-                usuarioBanco.DataCriacao = DateTime.Now;
-                usuarioBanco.DataAlteracao = DateTime.Now;
+                //usuarioBanco.DataCriacao = DateTime.Now;
+                //usuarioBanco.DataAlteracao = DateTime.Now;
 
                 /*Usuarios - necessário add pacote do NuGet*/
-                objContext.Usuarios.Add(usuarioBanco);
-                objContext.SaveChanges();
+                //objContext.Usuarios.Add(usuarioBanco);
+                //objContext.SaveChanges();
+
+                using (UsuarioRepositorio _repUsuario = new UsuarioRepositorio())
+                {
+                    _repUsuario.Inserir(usuarioBanco);
+                }
+
 
                 /*temp-data semelhante ao view bag porém é usado para views diferentes*/
                 TempData["Mensagem"] = "Usuario cadastrado";
                 return RedirectToAction("Login");
-              
+
             }
             catch (Exception ex)
             {
                 ViewBag.Erro = ex.Message;
                 return View(usuario);
-                
+
             }
             finally
             {
                 objContext = null;
                 usuario = null;
             }
-           
-           
-            
+
+
+
         }
 
         private SelectList ListaSexo()
@@ -143,7 +169,7 @@ namespace Senai.Chamados.Web.Controllers
             new SelectListItem{ Text = "Masculino", Value = "1" },
             new SelectListItem { Text = "Feminino", Value = "2" },
             }, "Value", "Text");
-        
+
 
         }
     }

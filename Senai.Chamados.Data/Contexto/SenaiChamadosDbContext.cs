@@ -19,5 +19,43 @@ namespace Senai.Chamados.Data.Contexto
 
         // referencia as tabelas do banco
         public DbSet<UsuarioDomain> Usuarios { get; set; }
+       
+        /*usando polimosfismo alterando o SaveChanges ()*/
+        public override int SaveChanges()
+        {
+            try
+            {
+                /*verificando se os dados já existem*/
+                foreach (var entry in ChangeTracker.Entries().Where(e => e.Entity.GetType().GetProperty("DataCriacao")!= null))
+                {
+                    
+                    if (new Guid(entry.Property("Id").CurrentValue.ToString()) == Guid.Empty)
+                    {
+                        entry.Property("Id").CurrentValue = Guid.NewGuid();
+                    }
+
+                    if (entry.State == EntityState.Added)
+                    {
+                        entry.Property("DataCriacao").CurrentValue = DateTime.Now;
+                        entry.Property("DataAlteracao").CurrentValue = DateTime.Now;
+                    }
+
+                    if(entry.State == EntityState.Modified)
+                    {
+                        entry.Property("DataCriacao").IsModified = false;
+                        entry.Property("DataAlteracao").CurrentValue = DateTime.Now;
+                    }
+
+                }
+                /* referenciando como base.SaveChanges() é em relação a quem esta herdando no caso DbContext ou seja epanas salvar após modificações*/
+                return base.SaveChanges();
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
