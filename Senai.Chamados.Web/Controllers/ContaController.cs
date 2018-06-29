@@ -1,4 +1,5 @@
-﻿using Senai.Chamados.Data.Contexto;
+﻿using AutoMapper;
+using Senai.Chamados.Data.Contexto;
 using Senai.Chamados.Data.Repositorios;
 using Senai.Chamados.Domain.Contratos;
 using Senai.Chamados.Domain.Entidades;
@@ -105,7 +106,8 @@ namespace Senai.Chamados.Web.Controllers
             //}, "Value", "Text");
             #endregion
 
-            SenaiChamadosDbContext objContext = new SenaiChamadosDbContext();
+            /*não utilizado após a ultima implementação*/
+            //SenaiChamadosDbContext objContext = new SenaiChamadosDbContext();
             UsuarioDomain usuarioBanco = new UsuarioDomain();
 
             try
@@ -113,19 +115,24 @@ namespace Senai.Chamados.Web.Controllers
                 /*ao tentar adicionar um novo usuario necessário iniciar o id*/
                 //usuarioBanco.Id = Guid.NewGuid();
 
-                usuarioBanco.Nome = usuario.Nome;
-                usuarioBanco.Email = usuario.Email;
-                usuarioBanco.Senha = usuario.Senha;
-                usuarioBanco.Telefone = usuario.Telefone.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "").Trim();
-                /*necessário incluir após a criação da view dos campos*/
-                usuarioBanco.Cpf = usuario.Cpf.Replace(".", "").Replace(".", "").Replace(".", "").Replace("-", "");
+                ///*não serão mais necessários as linhas abaixo por conta do AutoMapper*/
+                //usuarioBanco.Nome = usuario.Nome;
+                //usuarioBanco.Email = usuario.Email;
+                //usuarioBanco.Senha = usuario.Senha;
+                //usuarioBanco.Telefone = usuario.Telefone.Replace("(", "").Replace(")", "").Replace("-", "").Replace(" ", "").Trim();
+                ///*necessário incluir após a criação da view dos campos*/
+               // usuarioBanco.Cpf = usuario.Cpf.Replace(".", "").Replace(".", "").Replace(".", "").Replace("-", "");
+                //usuarioBanco.Cep = usuario.Cep.Replace("-", "");
+                
+                /*usuario banco não sera mais necessário pois a viewModel esta sendo convertida para o Domain*/
+                usuario.Cpf = usuario.Cpf.Replace(".", "").Replace(".", "").Replace(".", "").Replace("-", "");
                 usuario.Cep = usuario.Cep.Replace("-", "");
-                usuarioBanco.Logradouro = usuario.Logradouro;
-                usuarioBanco.Numero = usuario.Numero;
-                usuarioBanco.Complemento = usuario.Complemento;
-                usuarioBanco.Bairro = usuario.Bairro;
-                usuarioBanco.Cidade = usuario.Cidade;
-                usuarioBanco.Estado = usuario.Estado;
+                //usuarioBanco.Logradouro = usuario.Logradouro;
+                //usuarioBanco.Numero = usuario.Numero;
+                //usuarioBanco.Complemento = usuario.Complemento;
+                //usuarioBanco.Bairro = usuario.Bairro;
+                //usuarioBanco.Cidade = usuario.Cidade;
+                //usuarioBanco.Estado = usuario.Estado;
 
                 //usuarioBanco.DataCriacao = DateTime.Now;
                 //usuarioBanco.DataAlteracao = DateTime.Now;
@@ -136,7 +143,9 @@ namespace Senai.Chamados.Web.Controllers
 
                 using (UsuarioRepositorio _repUsuario = new UsuarioRepositorio())
                 {
-                    _repUsuario.Inserir(usuarioBanco);
+                    //_repUsuario.Inserir(usuarioBanco);
+                    _repUsuario.Inserir(Mapper.Map<CadastrarUsuarioViewModel, UsuarioDomain>(usuario));
+
                 }
 
 
@@ -153,7 +162,7 @@ namespace Senai.Chamados.Web.Controllers
             }
             finally
             {
-                objContext = null;
+                //objContext = null;
                 usuario = null;
             }
 

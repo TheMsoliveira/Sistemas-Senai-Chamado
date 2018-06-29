@@ -13,11 +13,12 @@
 
 @using (Html.BeginForm("Login", "Conta", FormMethod.Post, new { @Class = "form-signin" }))
 {
-    <img class="mb-4" src="https://getbootstrap.com/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <img  class="mb-4" src="~/Content/img/if_revisi_02_2191544.png" alt="" align="right" width="72" height="72">
+    <h1 class="h3 mb-3 font-weight-normal" align="center">Login</h1>
+    <p align="center">Faça o Login para abrir os chamados em nosso sistema</p>
 
     <p>@ViewBag.Erro</p>
-    <p>@TempData["Mensagem"]</p>
+    <p align="center">@TempData["Mensagem"]</p>
 
     <div class="form-label-group">
         @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
@@ -29,10 +30,11 @@
     <div class="form-label-group">
         @* @Html.TextBoxFor(x => x.Senha, new { @class = "form-control", placeHolder = "Informe a senha", required = "true" })  *@
         <!--  Usar o componente PasswordFor em vez do TextBoxFor para aparecer * -->
-        @Html.PasswordFor(x => x.Senha)
+        @Html.PasswordFor(x => x.Senha, new { @class ="form-control"})
         @Html.LabelFor(x => x.Senha)
         @Html.ValidationMessageFor(x => x.Senha)
     </div>
+
     <div class="checkbox mb-3">
         <label>
             <input type="checkbox" value="remember-me"> Remember me
