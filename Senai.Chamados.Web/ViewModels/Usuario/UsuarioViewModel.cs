@@ -42,7 +42,7 @@ namespace Senai.Chamados.Web.ViewModels.Usuario
         /*select list exibe uma lista de dados --  sempre realizarmos o uso de uma
          comboBox, necessário usar uma propriedade para lista e outra para captuda de valor*/
         public SelectList Sexo { get; set; }
-        [Required(ErrorMessage = "Informe o Sexo")]
+        //[Required(ErrorMessage = "Informe o Sexo")]
         public string SexoId { get; set; }
 
         [Display(Name = "Informe o CEP")]

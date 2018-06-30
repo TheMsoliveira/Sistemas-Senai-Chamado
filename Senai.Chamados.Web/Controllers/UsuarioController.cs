@@ -19,12 +19,75 @@ namespace Senai.Chamados.Web.Controllers
             ListaUsuarioViewModel vmListaUsuario = new ListaUsuarioViewModel();
 
             /*sempre que for fazer integração com a abase de dados usamos a classe repositorio do objeto : CRUD sempre usar o repositorio*/
-            using (UsuarioRepositorio _repositorio = new UsuarioRepositorio()) 
+            using (UsuarioRepositorio _repositorio = new UsuarioRepositorio())
             {
                 vmListaUsuario.ListaUsuarios = Mapper.Map<List<UsuarioDomain>, List<UsuarioViewModel>>(_repositorio.Listar());
             }
 
             return View(vmListaUsuario);
+        }
+
+        [HttpGet]
+        public ActionResult Editar(Guid Id)
+        {
+            if (Id == Guid.Empty)
+            {
+                TempData["Erro"] = "Informe o ID do Usuario";
+                return RedirectToAction("Index");
+            }
+
+            UsuarioViewModel vmUsuario = new UsuarioViewModel();
+
+            using (UsuarioRepositorio _repositorio = new UsuarioRepositorio())
+            {
+                vmUsuario = Mapper.Map<UsuarioDomain, UsuarioViewModel>(_repositorio.BuscarPorId(Id));
+
+                if (vmUsuario == null)
+                {
+                    TempData["Erro"] = "Usuario não encontrado";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View(vmUsuario);
+                }
+            }
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Editar(UsuarioViewModel usuario)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewBag.Erro = "Dados invalidos";
+                return View(usuario);
+
+              
+
+
+            }
+
+            try
+            {
+                usuario.Cpf = usuario.Cpf.Replace(".","").Replace("-","");
+                usuario.Cep = usuario.Cep.Replace("-", "");
+                usuario.Telefone = usuario.Telefone.Replace("(", "").Replace(")", "").Replace("-", "").Trim();
+
+                using (UsuarioRepositorio _repUsuario = new UsuarioRepositorio())
+                {
+                    _repUsuario.Alterar(Mapper.Map <UsuarioViewModel, UsuarioDomain>(usuario));
+                }
+                TempData["Erro"] = "Usuario Editado";
+                return RedirectToAction("Index");
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
     }
 }

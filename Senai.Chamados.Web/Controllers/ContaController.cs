@@ -5,6 +5,7 @@ using Senai.Chamados.Domain.Contratos;
 using Senai.Chamados.Domain.Entidades;
 using Senai.Chamados.Web.Models;
 using Senai.Chamados.Web.ViewModels;
+using Senai.Chamados.Web.ViewModels.Usuario;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +25,7 @@ namespace Senai.Chamados.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel Login)
         {
             // verificando se o estado do model é valido
@@ -48,7 +50,7 @@ namespace Senai.Chamados.Web.Controllers
                 }
 
             }
-            /*trecho de código não é mais necessário uma vez que a validação esta sendo feita acims*/
+            /*trecho de código não é mais necessário uma vez que a validação esta sendo feita acima*/
             //// Valida Usuário
             //if (Login.Email == "senai@senai.sp" && Login.Senha == "123456")
             //{
@@ -85,6 +87,7 @@ namespace Senai.Chamados.Web.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult CadastrarUsuario(CadastrarUsuarioViewModel usuario)
         {
             usuario.Sexo = ListaSexo();
@@ -181,5 +184,60 @@ namespace Senai.Chamados.Web.Controllers
 
 
         }
+
+        [HttpGet]
+        public ActionResult Deletar(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                TempData["Erro"] = "Informe o id do usuario";
+                return RedirectToAction("Index");
+            }
+
+            using (UsuarioRepositorio _repUsuario = new UsuarioRepositorio())
+            {
+                UsuarioViewModel vmUsuario = Mapper.Map<UsuarioDomain, UsuarioViewModel>(_repUsuario.BuscarPorId(id));
+
+                if (vmUsuario == null)
+                {
+                    TempData["Erro"] = "Usuario não encontrado";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return View(vmUsuario);
+                }
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Deletar(UsuarioViewModel usuario)
+        {
+            if (usuario.Id == Guid.Empty)
+            {
+                TempData["Erro"] = "Informe o id do usuario";
+                return RedirectToAction("Index");
+            }
+
+            using (UsuarioRepositorio _repUsuario = new UsuarioRepositorio())
+            {
+                UsuarioViewModel vmUsuario = Mapper.Map<UsuarioDomain, UsuarioViewModel>(_repUsuario.BuscarPorId(usuario.Id));
+
+                if (vmUsuario == null)
+                {
+                    TempData["Erro"] = "Usuario não encontrado";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    _repUsuario.Deletar(Mapper.Map<UsuarioViewModel, UsuarioDomain>(vmUsuario));
+                    TempData["Erro"] = "Usuario excluido";
+                    return RedirectToAction("Index");
+                }
+
+            }
+        }
+
     }
 }

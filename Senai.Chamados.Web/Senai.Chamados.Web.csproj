@@ -147,6 +147,8 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Conta\Login.cshtml" />
     <Content Include="Views\Usuario\Index.cshtml" />
+    <Content Include="Views\Usuario\Editar.cshtml" />
+    <Content Include="Views\Conta\Deletar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
