@@ -66,7 +66,8 @@ namespace Senai.Chamados.Data.Repositorios
         /// <returns></returns>
         public bool Deletar(UsuarioDomain domain)
         {
-            _contexto.Usuarios.Remove(domain);
+            var usuario = _contexto.Usuarios.Single(o => o.Id == domain.Id);
+            _contexto.Usuarios.Remove(usuario);
             int linhasExcluidas = _contexto.SaveChanges();
 
             if (linhasExcluidas > 0)
