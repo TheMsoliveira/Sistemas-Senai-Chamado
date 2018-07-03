@@ -10,9 +10,11 @@ using System.Web.Mvc;
 
 namespace Senai.Chamados.Web.Controllers
 {
+    //[Authorize] // liberação de acesso  para todos os campos
     public class UsuarioController : Controller
     {
         // GET: Usuario
+        
         public ActionResult Index()
         {
 
@@ -27,6 +29,7 @@ namespace Senai.Chamados.Web.Controllers
             return View(vmListaUsuario);
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult Editar(Guid Id)
         {
@@ -141,6 +144,8 @@ namespace Senai.Chamados.Web.Controllers
             }
 
         }
+
+       
     }
 
 }

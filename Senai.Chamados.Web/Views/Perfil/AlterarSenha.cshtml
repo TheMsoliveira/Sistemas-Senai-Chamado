@@ -1,0 +1,24 @@
+﻿@model Senai.Chamados.Web.ViewModels.Conta.AlterarSenhaViewModel
+@{
+    ViewBag.Title = "AlterarSenha";
+    Layout = "~/Views/Shared/_LayoutPage.cshtml";
+}
+
+<h2>AlterarSenha</h2>
+
+@using (Html.BeginForm)
+{
+    <di class="form-horizontal">
+        @Html.ValidationSummary(true,"",new { @class =" text-danger" })
+        <div class="col-md-10">
+            @Html.EditorFor(x=> x.SenhaAtual, "" ,  new { @class = "form-control"})
+            @Html.ValidationMessageFor(x=> x.ConfirmaSenha,"", new { @class = "text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.EditorFor(x => x.NovaSenha, "", new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.ConfirmaSenha, "", new { @class = "text-danger" })
+        </div>
+    </di>
+
+
+}

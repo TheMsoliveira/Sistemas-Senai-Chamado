@@ -10,7 +10,7 @@
     @RenderSection("Styles", required: false)
 </head>
 <body>
-    
+
 
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <a class="navbar-brand" href="#">Senai Chamados</a>
@@ -19,13 +19,31 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item login">
-                    <a class="nav-link " href="/conta/login">Login <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item cadastrarusuario">
-                    <a class="nav-link" href="/conta/cadastrarusuario">Cadastrar Conta</a>
-                </li>
+            <ul class="nav navbar-nav navbar-rigth">
+
+                @*se o usuario estiver logado*@
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="dropdown">
+                        <a hef="#" class="dropdown-toogle" data-toogle="dropdown">@User.Identity.Name <span class="caret"></span></a>
+                        <ul class="dropdown">
+                            <li>@Html.ActionLink("Alterar a Senha", "AlterarSenha", "Perfil")</li>
+                            <li>@Html.ActionLink("Sair", "Logout", "Conta")</li>
+                        </ul>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item login">
+                        <a class="nav-link " href="/conta/login">Login <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item cadastrarusuario">
+                        <a class="nav-link" href="/conta/cadastrarusuario">Cadastrar Conta</a>
+                    </li>
+                }
+
+
+
             </ul>
         </div>
     </nav>
