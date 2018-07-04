@@ -10,7 +10,7 @@ namespace Senai.Chamados.Web.ViewModels.Conta
     {   
         [Required(ErrorMessage = "Informe a senha atual")]
         [DataType(DataType.Password)]
-        [Display(Name="Senha Atual")]
+        [Display(Name = "Senha Atual")]
         [MinLength(4, ErrorMessage ="A senha deve tger pelo menos 4  caracteres")]
         public string SenhaAtual { get; set; }
 

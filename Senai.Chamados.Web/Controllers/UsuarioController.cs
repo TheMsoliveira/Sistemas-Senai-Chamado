@@ -10,14 +10,19 @@ using System.Web.Mvc;
 
 namespace Senai.Chamados.Web.Controllers
 {
-    //[Authorize] // liberação de acesso  para todos os campos
+    //[Authorize (Roles = "Administrador")] // liberação de acesso  para todos os campos
     public class UsuarioController : Controller
     {
         // GET: Usuario
         
         public ActionResult Index()
         {
-
+            // commentario para usar o recurso de [Authorize (Roles = "Administrador")]  em apenas uma das funções
+            //if (!User.IsInRole ("Administrador"))
+            //{
+            //    ViewBag.Erro = "Você não tem permissão para acessar esta tela";
+            //    return View();
+            //}
             ListaUsuarioViewModel vmListaUsuario = new ListaUsuarioViewModel();
 
             /*sempre que for fazer integração com a abase de dados usamos a classe repositorio do objeto : CRUD sempre usar o repositorio*/
@@ -29,7 +34,7 @@ namespace Senai.Chamados.Web.Controllers
             return View(vmListaUsuario);
         }
 
-        [Authorize]
+        [Authorize(Roles = "Administrador")]
         [HttpGet]
         public ActionResult Editar(Guid Id)
         {

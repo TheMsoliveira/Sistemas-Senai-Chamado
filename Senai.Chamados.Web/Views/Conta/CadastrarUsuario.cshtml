@@ -1,5 +1,5 @@
 ﻿
-@model Senai.Chamados.Web.Models.CadastrarUsuarioViewModel
+@model Senai.Chamados.Web.ViewModels.Usuario.UsuarioViewModel
 
 
 @{
@@ -106,8 +106,8 @@
     </div>
 
     <div class="form-label-group">
-        @Html.DropDownListFor(x => x.SexoId, Model.Sexo, "Selecione o Sexo", new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.SexoId)
+        @Html.DropDownListFor(x => x.Sexo, Model.ListaSexo, "Selecione o Sexo", new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Sexo)
     </div>
 
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>

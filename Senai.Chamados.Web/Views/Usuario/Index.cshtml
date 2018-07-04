@@ -8,14 +8,24 @@
 
     <div class="starter-template">
     </div>
-@TempData["Erro"]
+
+    @if (ViewBag.Erro != null)
+    {
+        <div class="alert alert-danger">
+            <p align="center">@ViewBag.Erro</p>
+        </div>
+    }
+
+    @TempData["Erro"]
 
     @section Styles{
         <link href="https://getbootstrap.com/docs/4.1/examples/starter-template/starter-template.css" rel="stylesheet">
     }
-
-        <h2 align="center">Tela do Usuário</h2>
-
+    <br />
+    <h2 align="center">Tela do Usuário</h2>
+    <br />
+    @if (Model != null)
+    {
         <table class="table">
             <thead>
                 <tr>
@@ -39,3 +49,4 @@
                 }
             </tbody>
         </table>
+    }
