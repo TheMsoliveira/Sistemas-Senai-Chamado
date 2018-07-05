@@ -101,7 +101,7 @@ namespace Senai.Chamados.Data.Repositorios
 
             if (linhasInocluidas > 0 )
             {
-                return true;
+                return true;  
             }
             else
             {

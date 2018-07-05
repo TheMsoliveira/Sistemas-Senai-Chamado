@@ -1,5 +1,6 @@
 ﻿using Senai.Chamados.Domain.Enum;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,16 +18,16 @@ namespace Senai.Chamados.Domain.Entidades
         public string Nome { get; set; }
 
         [Required]
-        public string   Email{ get; set; }
+        public string Email { get; set; }
 
         [Required]
         [MaxLength(8)]
-        public string  Senha  { get; set; }
+        public string Senha { get; set; }
 
         [MaxLength(11)]
-        public string Cpf{ get; set; }
+        public string Cpf { get; set; }
 
-        public string  Telefone{ get; set; }
+        public string Telefone { get; set; }
 
         [MaxLength(8)]
         public string Cep { get; set; }
@@ -37,9 +38,14 @@ namespace Senai.Chamados.Domain.Entidades
 
         public string Logradouro { get; set; }
         public string Numero { get; set; }
-        public string  Complemento { get; set; }
-        public string  Bairro { get; set; }
-        public string Cidade{ get; set; }
+        public string Complemento { get; set; }
+        public string Bairro { get; set; }
+        public string Cidade { get; set; }
         public string Estado { get; set; }
-    }
+
+        /* atende a demanda do usuario ter um ou mais chamados*/
+        public virtual ICollection<ChamadoDomain> Chamados { get; set; }
+
+
+    } 
 }

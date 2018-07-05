@@ -15,6 +15,7 @@ using System.Web.Mvc;
 
 namespace Senai.Chamados.Web.Controllers
 {
+    
     public class ContaController : Controller
     {
         // GET: Conta

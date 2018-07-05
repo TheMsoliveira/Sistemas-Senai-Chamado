@@ -19,7 +19,9 @@ namespace Senai.Chamados.Data.Contexto
 
         // referencia as tabelas do banco
         public DbSet<UsuarioDomain> Usuarios { get; set; }
-       
+        public DbSet<ChamadoDomain> Chamados { get; set; }
+
+
         /*usando polimosfismo alterando o SaveChanges ()*/
         public override int SaveChanges()
         {
