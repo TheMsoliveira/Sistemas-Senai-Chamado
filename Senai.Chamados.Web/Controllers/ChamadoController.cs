@@ -17,13 +17,13 @@ namespace Senai.Chamados.Web.Controllers
         // GET: Chamado
         public ActionResult Index()
         {
-            ListaChamadoViewModel vmListaChamados= new ListaChamadoViewModel();
+            ListaChamadoViewModel vmListaChamados = new ListaChamadoViewModel();
 
-            using (ChamadoRepositorio _repChamado =  new ChamadoRepositorio())
+            using (ChamadoRepositorio _repChamado = new ChamadoRepositorio())
             {
                 if (User.IsInRole("Administrador"))
                 {
-                    vmListaChamados.ListaChamados = Mapper.Map<List<ChamadoDomain>, List<ChamadoViewModel>> (_repChamado.Listar());
+                    vmListaChamados.ListaChamados = Mapper.Map<List<ChamadoDomain>, List<ChamadoViewModel>>(_repChamado.Listar());
                 }
                 else
                 {
@@ -37,6 +37,44 @@ namespace Senai.Chamados.Web.Controllers
             }
 
             return View(vmListaChamados);
+        }
+
+        public ActionResult Cadastrar()
+        {
+            ChamadoViewModel vmChamado = new ChamadoViewModel();
+            return View(vmChamado);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Cadastrar(ChamadoViewModel chamado)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.Erro = "Dadpos inválidos";
+                    return View(chamado);
+                }
+
+                using (ChamadoRepositorio objRepChamado = new ChamadoRepositorio())
+                {
+                    var identity = User.Identity as ClaimsIdentity;
+                    var id = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+                    objRepChamado.Inserir(Mapper.Map < ChamadoViewModel, ChamadoDomain>(chamado));
+
+                }
+                TempData["Sucesso"] = "Chamado cadastrado com sucesso";
+                return RedirectToAction("Index");
+               
+
+            }
+            catch (Exception ex)
+            {
+
+                ViewBag.Erro = ex.Message;
+                return View(chamado);
+            }
         }
     }
 }
