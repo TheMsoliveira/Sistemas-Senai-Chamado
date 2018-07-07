@@ -16,9 +16,9 @@
 
     <div class="starter-template">
         <h2> Tela Chamados</h2>
-        @if (TempData["Erro"] == null)
+        @if (TempData["Erro"] != null)
         {
-            <div div="class-alert-danger">
+            <div  class="alert alert-danger">
                 @TempData["Erro"]
             </div>
 
@@ -26,7 +26,7 @@
 
         @if (TempData["Sucesso"] != null)
         {
-            <div div="class-alert-danger">
+            <div class=" alert alert-sucess">
                 @TempData["Sucesso"]
             </div>
         }
@@ -34,12 +34,11 @@
                 <thead>
                     <tr>
                         <th scope="col">Titulo</th>
-                        <th scope="col">Setorl</th>
+                        <th scope="col">Setor</th>
                         <th scope="col">Status</th>
                         <th scope="col">Data Criação</th>
                         <th>
                             <a href="/Chamado/Cadastrar" class="btn btn-primary" Cadastrar>Cadastrar</a>
-
                         </th>
                     </tr>
                 </thead>
