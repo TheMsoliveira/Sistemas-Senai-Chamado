@@ -124,6 +124,7 @@ namespace Senai.Chamados.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrador")]
         public ActionResult Deletar(UsuarioViewModel usuario)
         {
             if (usuario.Id == Guid.Empty)

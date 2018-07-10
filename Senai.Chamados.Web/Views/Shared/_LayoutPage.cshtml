@@ -21,22 +21,22 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="nav navbar-nav navbar-rigth">
 
+
                 @*se o usuario estiver logado*@
                 @if (User.Identity.IsAuthenticated)
-                 {
+                {
 
                     <li>
-                        @Html.ActionLink("Chamados", "Index", "Chamado")
+                        <a href="/Chamado" class="nav-link">Chamados</a>
                     </li>
-
-                    if(User.IsInRole("Administrador"))
+                    if (User.IsInRole("Administrador"))
                     {
                         <li>
-                            @Html.ActionLink("Usuários","Index", "Usuario")
+                            <a href="/Usuario" class="nav-link">Usuários</a>
                         </li>
                     }
                     <li class="dropdown">
-                        <a hef="#" class="dropdown-toogle" data-toogle="dropdown">@User.Identity.Name <span class="caret"></span></a>
+                        <a hef="#" class="dropdown-toggle nav-link" data-toggle="dropdown">@User.Identity.Name<span class="caret"></span></a>
                         <ul class="dropdown">
                             <li>@Html.ActionLink("Alterar a Senha", "AlterarSenha", "Perfil")</li>
                             <li>@Html.ActionLink("Sair", "Logout", "Conta")</li>
