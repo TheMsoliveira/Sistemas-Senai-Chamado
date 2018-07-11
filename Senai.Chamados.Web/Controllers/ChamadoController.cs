@@ -64,12 +64,12 @@ namespace Senai.Chamados.Web.Controllers
                     var id = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
                     chamado.IdUsuario = new Guid(id);
 
-                    objRepChamado.Inserir(Mapper.Map < ChamadoViewModel, ChamadoDomain>(chamado));
+                    objRepChamado.Inserir(Mapper.Map<ChamadoViewModel, ChamadoDomain>(chamado));
 
                 }
                 TempData["Sucesso"] = "Chamado cadastrado com sucesso";
                 return RedirectToAction("Index");
-               
+
 
             }
             catch (Exception ex)
@@ -81,13 +81,13 @@ namespace Senai.Chamados.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Editar(string id)// string id evita erro ao carregar página
+        public ActionResult Editar(Guid? id)// string id evita erro ao carregar página
         {
             ChamadoViewModel objChamado = new ChamadoViewModel();
 
 
             try
-            {   
+            {
                 /*bloco de validação de um id nulo*/
                 if (id == null)
                 {
@@ -96,9 +96,10 @@ namespace Senai.Chamados.Web.Controllers
                 }
 
                 using (ChamadoRepositorio objRepoChamado = new ChamadoRepositorio())
-                {   
+                {
                     // busca chamado pelo Id
-                    objChamado = Mapper.Map<ChamadoDomain, ChamadoViewModel>(objRepoChamado.BuscarPorId(new Guid (id)));
+                    //  objChamado = Mapper.Map<ChamadoDomain, ChamadoViewModel>(objRepoChamado.BuscarPorId(new Guid (id)));
+                    objChamado = Mapper.Map<ChamadoDomain, ChamadoViewModel>(objRepoChamado.BuscarPorId(id.Value));
 
                     if (objChamado == null)
                     {
@@ -109,17 +110,17 @@ namespace Senai.Chamados.Web.Controllers
 
                     #region Buscar Id Usuario
                     var identity = User.Identity as ClaimsIdentity;
-                    var idUsuario = identity.Claims.FirstOrDefault(x=> x.Type == ClaimTypes.NameIdentifier).Value;
+                    var idUsuario = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
                     #endregion
 
-                    if (User.IsInRole("Administrador")|| idUsuario == objChamado.IdUsuario.ToString())
+                    if (User.IsInRole("Administrador") || idUsuario == objChamado.IdUsuario.ToString())
                         return View(objChamado);
                     else
                     {
                         TempData["Erro"] = "Este chamado pertence a outro usuario";
                         return RedirectToAction("Index");
                     }
-                                 
+
                 }
 
             }
@@ -130,7 +131,7 @@ namespace Senai.Chamados.Web.Controllers
             }
 
 
-            
+
         }
 
 
@@ -152,7 +153,7 @@ namespace Senai.Chamados.Web.Controllers
 
                 using (ChamadoRepositorio objRepChamado = new ChamadoRepositorio())
                 {
-                    objRepChamado.Alterar(Mapper.Map <ChamadoViewModel, ChamadoDomain>(chamado));
+                    objRepChamado.Alterar(Mapper.Map<ChamadoViewModel, ChamadoDomain>(chamado));
                     TempData["Sucesso"] = "Chamado Alterado";
                     return RedirectToAction("Index");
 
@@ -167,10 +168,18 @@ namespace Senai.Chamados.Web.Controllers
         }
 
         [HttpGet]
-        public ActionResult Excluir(string id)
+        //public ActionResult Excluir(string id)
+        public ActionResult Excluir(Guid? id)
         {
             try
             {
+
+                if (!User.IsInRole("Administrador"))
+                {
+                    TempData["Erro"] = "Voce não tem permissaõ de excluir o chamados";
+                    return RedirectToAction("Index");
+                }
+
                 if (id == null)
                 {
                     TempData["Erro"] = "Informe o id do chamado";
@@ -182,8 +191,9 @@ namespace Senai.Chamados.Web.Controllers
 
                 using (ChamadoRepositorio objRepChamado = new ChamadoRepositorio())
                 {
-                    objChamado = Mapper.Map<ChamadoDomain, ChamadoViewModel>(objRepChamado.BuscarPorId(new Guid(id)));
-                    if (objChamado == null )
+                    //objChamado = Mapper.Map<ChamadoDomain, ChamadoViewModel>(objRepChamado.BuscarPorId(new Guid(id)));
+                    objChamado = Mapper.Map<ChamadoDomain, ChamadoViewModel>(objRepChamado.BuscarPorId(id.Value));
+                    if (objChamado == null)
                     {
                         TempData["Erro"] = "Chamado encontrado";
                         return RedirectToAction("Index");
@@ -210,6 +220,54 @@ namespace Senai.Chamados.Web.Controllers
                 ViewBag.Erro = ex.Message;
                 return View();
             }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Excluir(ChamadoViewModel chamado)
+        {
+
+            try
+            {
+                if (!User.IsInRole("Administrador"))
+                {
+                    TempData["Erro"] = "Voce não tem permissaõ de excluir o chamados";
+                    return RedirectToAction("Index");
+                }
+
+                if (chamado.Id == Guid.Empty)
+                {
+                    TempData["Erro"] = "Infomr o Id do chamado";
+                    return RedirectToAction("Index");
+                }
+                using (ChamadoRepositorio objRepChamado = new ChamadoRepositorio())
+                {
+                    ChamadoViewModel objChamado = Mapper.Map<ChamadoDomain, ChamadoViewModel>(objRepChamado.BuscarPorId(chamado.Id));
+
+
+                    if (objChamado == null)
+                    {
+                        TempData["Erro"] = "Chamado não encontrado";
+                        return RedirectToAction("Index");
+                    }
+
+                    objRepChamado.Deletar(Mapper.Map<ChamadoViewModel, ChamadoDomain>(objChamado));
+                    TempData["Sucesso"] = "Chamado excluido";
+                    return RedirectToAction("Index");
+
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+
+                ViewBag.Erro = ex.Message;
+                return View(chamado);
+            }
+
+
         }
 
     }

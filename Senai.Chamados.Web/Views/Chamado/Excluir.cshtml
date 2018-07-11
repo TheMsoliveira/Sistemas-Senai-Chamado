@@ -6,3 +6,12 @@
 
 <h2>Excluir</h2>
 
+ @using (Html.BeginForm("Excluir", "Chamado", FormMethod.Post))
+ {
+     @Html.HiddenFor(x=>x.Id)
+     @Html.AntiForgeryToken()
+
+     <br />
+     <p> Voce deseja excluir o chamado @Model.Titulo</p>
+     <button class="btn btn-lg btn-primary btn-block" type="submit">Excluir</button>
+ }.

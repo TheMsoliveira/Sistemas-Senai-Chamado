@@ -39,7 +39,8 @@
                         <th scope="col">Data Criação</th>
                         <th>
                             <a href="/Chamado/Cadastrar" class="btn btn-primary" Cadastrar>Cadastrar</a>
-                        </th>
+                           
+	               </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -50,9 +51,16 @@
                         <td>@Html.DisplayFor(x => chamado.Setor)</td>
                         <td>@Html.DisplayFor(x => chamado.Status)</td>
                         <td>@Html.DisplayFor(x => chamado.DataCriacao)</td>
+
+                        @*exibição sera feita aepnas para usuario administradores*@
+                        @if (User.IsInRole("Administrador"))
+                        {
+                            <td><a class=" btn btn-primary" href="/Chamado/Excluir/@chamado.Id">Excluir</a></td>
+                        }
+
                         <td><a class=" btn btn-primary" href="/Chamado/Editar/@chamado.Id">Editar</a></td>
-                        <td><a class=" btn btn-primary" href="/Chamado/Excluir/@chamado.Id">Excluir</a></td>
-                     </tr>
+
+                    </tr>
 
                      }
                 </tbody>

@@ -1,5 +1,6 @@
 ﻿using Senai.Chamados.Data.Repositorios;
 using Senai.Chamados.Domain.Entidades;
+using Senai.Chamados.Web.Util;
 using Senai.Chamados.Web.ViewModels.Conta;
 using System;
 using System.Collections.Generic;
@@ -47,14 +48,14 @@ namespace Senai.Chamados.Web.Controllers
                 {   
                     // verifica se a senha ionformada é igual a atual
                     UsuarioDomain objUsuario =  objRepUsuario.BuscarPorId(new Guid(id));
-                    if (senha.SenhaAtual != objUsuario.Senha)
+                    if (Hash.GerarHash(senha.SenhaAtual) != objUsuario.Senha)
                     {
                         //  senha invalida informo o usuario
                         ModelState.AddModelError("Senha Atual", "Senha incorreta");
                         return View();
                     }
                     // atribue o valor da nova senha ao objeto usuario
-                    objUsuario.Senha = senha.NovaSenha;
+                    objUsuario.Senha = Hash.GerarHash(senha.NovaSenha);
                     // altera o usuario no bando
                     objRepUsuario.Alterar(objUsuario);
                     // Defimos a mensagem que ira aparecer na tela

@@ -21,7 +21,7 @@ namespace Senai.Chamados.Domain.Entidades
         public string Email { get; set; }
 
         [Required]
-        [MaxLength(8)]
+        [MaxLength(150)]
         public string Senha { get; set; }
 
         [MaxLength(11)]
@@ -29,6 +29,7 @@ namespace Senai.Chamados.Domain.Entidades
 
         public string Telefone { get; set; }
 
+        
         [MaxLength(8)]
         public string Cep { get; set; }
 
