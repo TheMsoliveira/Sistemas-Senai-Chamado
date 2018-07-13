@@ -5,17 +5,23 @@
 }
 
 
-@section Styles{
-    <link href="https://getbootstrap.com/docs/4.1/examples/starter-template/starter-template.css" rel="stylesheet">
-}
+
 <br />
 
-<h2>Index Chamados </h2>
 
-<main role="main" class="container">
 
-    <div class="starter-template">
-        <h2> Tela Chamados</h2>
+
+<div class="jumbotron">
+    <center>
+        <div class="container">
+            <h1>Tela de chamados</h1>
+            <p>Visualize todos os chamaldos e crie outros rapidamente</p>
+            <a href="/Chamado/Cadastrar" class="btn btn-primary" Cadastrar>Cadastrar</a>
+        </div>
+    </center>
+    
+</div>
+
         @if (TempData["Erro"] != null)
         {
             <div  class="alert alert-danger">
@@ -38,7 +44,7 @@
                         <th scope="col">Status</th>
                         <th scope="col">Data Criação</th>
                         <th>
-                            <a href="/Chamado/Cadastrar" class="btn btn-primary" Cadastrar>Cadastrar</a>
+                            
                            
 	               </th>
                     </tr>
@@ -51,30 +57,28 @@
                         <td>@Html.DisplayFor(x => chamado.Setor)</td>
                         <td>@Html.DisplayFor(x => chamado.Status)</td>
                         <td>@Html.DisplayFor(x => chamado.DataCriacao)</td>
+                        <td class="text-center">
+
+
+                        <td><a class=" btn btn-primary" href="/Chamado/Editar/@chamado.Id"><i class="glyphicon glyphicon-edit"></i></a></td>
 
                         @*exibição sera feita aepnas para usuario administradores*@
                         @if (User.IsInRole("Administrador"))
                         {
-                            <td><a class=" btn btn-primary" href="/Chamado/Excluir/@chamado.Id">Excluir</a></td>
+                            <td><a class=" btn btn-danger" href="/Chamado/Excluir/@chamado.Id"><i class="glyphicon glyphicon-trash"></i> </a></td>
                         }
 
-                        <td><a class=" btn btn-primary" href="/Chamado/Editar/@chamado.Id">Editar</a></td>
+
 
                     </tr>
 
                      }
-                </tbody>
+                </tbody>           
             </table>
 
 
 
-        
+    
 
 
-
-
-    </div>
-
-
-
-</main>
+ 

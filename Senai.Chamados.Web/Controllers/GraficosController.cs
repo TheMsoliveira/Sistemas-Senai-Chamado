@@ -62,17 +62,17 @@ namespace Senai.Chamados.Web.Controllers
 
                 // faz o agrupamento dos dados por status
                 var grupoSetor = vmListaChamados.ListaChamados
-                         .GroupBy(x => x.Status)
+                         .GroupBy(x => x.Setor)
                          .Select(n => new
                          {
-                             status = RetornaSetor(n.Key),
+                             setor = RetornaSetor(n.Key),
                              Quatidade = Convert.ToDouble(n.Count())
                          }).OrderBy(n => n.Quatidade);
                 // atribui as labels que serão mostradas no grafico
-                vmGrafico.GraficoSetor.Labels = grupoSetor.Select(x => x.status).ToArray();
+                vmGrafico.GraficoSetor.Labels = grupoSetor.Select(x => x.setor).ToArray();
 
                 //atribuir os dados que serão apresentados nos graficos
-                vmGrafico.GraficoSetor.Data = grupoStatus.Select(x => x.Quatidade).ToArray();
+                vmGrafico.GraficoSetor.Data = grupoSetor.Select(x => x.Quatidade).ToArray();
                 #endregion
 
                 return View(vmGrafico);
@@ -105,21 +105,10 @@ namespace Senai.Chamados.Web.Controllers
             return null;
         }
 
-        private string RetornaSetor(EnStatus status)
+        private string RetornaSetor(EnSetor setor)
         {
 
-            switch (status)
-            {
-                case EnStatus.Aguardando:
-                    return "Aguardando";
-                case EnStatus.Iniciado:
-                    return "Iniciado";
-                case EnStatus.Finalizado:
-                    return "Finalizado";
-
-            }
-
-            return null;
+            return setor.ToString();
         }
 
 
