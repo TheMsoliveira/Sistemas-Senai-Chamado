@@ -49,7 +49,7 @@ namespace Senai.Chamados.Web.ViewModels.Chamado
             return listaStatus;
         }
 
-        [Required(ErrorMessage ="Titulo deve ser preenchido")]
+        [Required(ErrorMessage ="Título deve ser preenchido")]
         [Display(Name = "Titulo Chamado")]
         public string Titulo { get; set; }
 

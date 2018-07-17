@@ -41,7 +41,7 @@ namespace Senai.Chamados.Web.Controllers
         {
             if (Id == Guid.Empty)
             {
-                TempData["Erro"] = "Informe o ID do Usuario";
+                TempData["Erro"] = "Informe o ID do usuário";
                 return RedirectToAction("Index");
             }
 
@@ -53,7 +53,7 @@ namespace Senai.Chamados.Web.Controllers
 
                 if (vmUsuario == null)
                 {
-                    TempData["Erro"] = "Usuario não encontrado";
+                    TempData["Erro"] = "Usuário não encontrado";
                     return RedirectToAction("Index");
                 }
                 else
@@ -70,7 +70,7 @@ namespace Senai.Chamados.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Erro = "Dados invalidos";
+                ViewBag.Erro = "Dados inválidos";
                 return View(usuario);
 
 
@@ -87,7 +87,7 @@ namespace Senai.Chamados.Web.Controllers
                 {
                     _repUsuario.Alterar(Mapper.Map<UsuarioViewModel, UsuarioDomain>(usuario));
                 }
-                TempData["Erro"] = "Usuario Editado";
+                TempData["Erro"] = "Usuário Editado";
                 return RedirectToAction("Index");
 
             }
@@ -112,7 +112,7 @@ namespace Senai.Chamados.Web.Controllers
                 UsuarioViewModel vmUsuario = Mapper.Map<UsuarioDomain, UsuarioViewModel>(_repUsuario.BuscarPorId(id));
                 if (vmUsuario == null)
                 {
-                    TempData["Erro"] = "Usuario não encontrado";
+                    TempData["Erro"] = "Usuário não encontrado";
                     return RedirectToAction("Index");
                 }
                 else
@@ -146,7 +146,7 @@ namespace Senai.Chamados.Web.Controllers
                 else
                 {
                     _repUsuario.Deletar(Mapper.Map<UsuarioViewModel, UsuarioDomain>(vmUsuario));
-                    TempData["Erro"] = "Usuario excluído";
+                    TempData["Erro"] = "Usuário excluído";
                     return RedirectToAction("Index");
                 }
             }

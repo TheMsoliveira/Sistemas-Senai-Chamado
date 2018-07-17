@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Senai.Chamados.Data.Repositorios;
 using Senai.Chamados.Domain.Entidades;
+using Senai.Chamados.Domain.Enum;
 using Senai.Chamados.Web.ViewModels.Chamado;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Senai.Chamados.Web.Controllers
     public class ChamadoController : Controller
     {
         // GET: Chamado
-        public ActionResult Index()
+        public ActionResult Index( string titulo, string setor)
         {
             ListaChamadoViewModel vmListaChamados = new ListaChamadoViewModel();
 
@@ -36,6 +37,20 @@ namespace Senai.Chamados.Web.Controllers
 
             }
 
+            //verifica se o campo titulo esta preenchido
+            if (!string.IsNullOrEmpty(titulo))
+            {
+                // filtro os chamados pelo titulo
+                vmListaChamados.ListaChamados = vmListaChamados.ListaChamados.Where(x => x.Titulo.ToUpper().Contains(titulo.ToUpper())).ToList();
+
+            }
+
+            if (! string.IsNullOrEmpty(setor))
+            {
+                vmListaChamados.ListaChamados = vmListaChamados.ListaChamados.Where(x => x.Setor == (EnSetor)Enum.Parse(typeof(EnSetor), setor)).ToList();
+            }
+
+
             return View(vmListaChamados);
         }
 
@@ -54,7 +69,7 @@ namespace Senai.Chamados.Web.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    ViewBag.Erro = "Dadpos inválidos";
+                    ViewBag.Erro = "Dados inválidos";
                     return View(chamado);
                 }
 
@@ -176,7 +191,7 @@ namespace Senai.Chamados.Web.Controllers
 
                 if (!User.IsInRole("Administrador"))
                 {
-                    TempData["Erro"] = "Voce não tem permissaõ de excluir o chamados";
+                    TempData["Erro"] = "Voce não tem permissão de excluir o chamados";
                     return RedirectToAction("Index");
                 }
 
@@ -209,7 +224,7 @@ namespace Senai.Chamados.Web.Controllers
                     {
                         return View(objChamado);
                     }
-                    TempData["Erro"] = "Você não possui permissão para excluir esste chamado";
+                    TempData["Erro"] = "Você não possui permissão para excluir este chamado";
                     return RedirectToAction("Index");
                 }
 

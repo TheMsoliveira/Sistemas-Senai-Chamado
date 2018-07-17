@@ -35,7 +35,7 @@ namespace Senai.Chamados.Web.Controllers
             // verificando se o estado do model é valido
             if (!ModelState.IsValid)
             {
-                ViewBag.Erro = "Dados invalidos";
+                ViewBag.Erro = "Dados inválidos";
                 return View();
             }
 
@@ -62,7 +62,7 @@ namespace Senai.Chamados.Web.Controllers
                 }
                 else
                 {
-                    ViewBag.Erro = "Usuario ou senha Invalida. Tente novamente";
+                    ViewBag.Erro = "Usuário ou senha inválida. Tente novamente";
                     return View(Login);
                 }
 
@@ -113,7 +113,7 @@ namespace Senai.Chamados.Web.Controllers
             // verificando se o estado do model é valido
             if (!ModelState.IsValid)
             {
-                ViewBag.Erro = "Dados invalidos";
+                ViewBag.Erro = "Dados inválidos";
                 return View(usuario);
             }
 
@@ -241,7 +241,7 @@ namespace Senai.Chamados.Web.Controllers
         {
             if (usuario.Id == Guid.Empty)
             {
-                TempData["Erro"] = "Informe o id do usuario";
+                TempData["Erro"] = "Informe o id do usuário";
                 return RedirectToAction("Index");
             }
 
@@ -257,7 +257,7 @@ namespace Senai.Chamados.Web.Controllers
                 else
                 {
                     _repUsuario.Deletar(Mapper.Map<UsuarioViewModel, UsuarioDomain>(vmUsuario));
-                    TempData["Erro"] = "Usuario excluido";
+                    TempData["Erro"] = "Usuário excluido";
                     return RedirectToAction("Index");
                 }
 

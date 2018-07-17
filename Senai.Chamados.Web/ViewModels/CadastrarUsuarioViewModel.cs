@@ -10,23 +10,23 @@ namespace Senai.Chamados.Web.Models
 {
     public class CadastrarUsuarioViewModel : BaseViewModel
     {   /*DataAnotation - validação de campos */
-        [Display(Name ="Informr o Nome")]
+        [Display(Name ="Informe o Nome")]
         [Required(ErrorMessage ="Informe o campo nome")]
         public string  Nome{ get; set; }
 
-        [Display(Name ="Informr o E-mail")]
+        [Display(Name ="Informe o E-mail")]
         [Required(ErrorMessage = "Informe o campo e-mail")]
-        [EmailAddress(ErrorMessage = "O email é invalido")]
+        [EmailAddress(ErrorMessage = "O email é inválido")]
         [DataType(DataType.EmailAddress)]
         public string Email{ get; set; }
 
-        [Display(Name = "Informr o Telefone")]
+        [Display(Name = "Informe o Telefone")]
         [Required(ErrorMessage = "Informe o campo telefone")]
         [DataType(DataType.PhoneNumber)]
         public string Telefone{ get; set; }
 
-        [Display(Name = "infkomre o CPF")]
-        [Required(ErrorMessage ="informe o CPF")]
+        [Display(Name = "Informe o CPF")]
+        [Required(ErrorMessage ="Informe o CPF")]
         [MaxLength(14)]
         public string Cpf{ get; set; }
 
@@ -35,8 +35,8 @@ namespace Senai.Chamados.Web.Models
         [Display(Name = "Informe a Senha")]
         [Required(ErrorMessage = "Informe o campo senha")]
         [DataType(DataType.Password)]
-        [MaxLength(8 , ErrorMessage =" numero maximo de caracteres é 8")]
-        [MinLength(4, ErrorMessage ="numero minimo de caracteres é 4")]
+        [MaxLength(8 , ErrorMessage =" Número máximo de caracteres é 8")]
+        [MinLength(4, ErrorMessage ="Número minimo de caracteres é 4")]
         public string Senha { get; set; }
         /*select list exibe uma lista de dados --  sempre realizarmos o uso de uma
          comboBox, necessário usar uma propriedade para lista e outra para captuda de valor*/

@@ -16,7 +16,7 @@ namespace Senai.Chamados.Web.ViewModels.Usuario
         [Required(ErrorMessage = "Informe o campo nome")]
         public string Nome { get; set; }
 
-        [Display(Name = "Informr o E-mail")]
+        [Display(Name = "Informe o E-mail")]
         [Required(ErrorMessage = "Informe o campo e-mail")]
         [EmailAddress(ErrorMessage = "O email é invalido")]
         [DataType(DataType.EmailAddress)]

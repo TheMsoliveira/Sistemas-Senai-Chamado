@@ -12,7 +12,7 @@ namespace Senai.Chamados.Data.Contexto
     {   
         // criação de um construtor para a conexão
         // usandmo connection string criada no app.config
-        public SenaiChamadosDbContext() : base (@"Data Source =.\SqlExpress; Initial Catalog = SenaiChamadosDb; user id = sa; password=senai@123")
+        public SenaiChamadosDbContext() : base ("SenaiConnection")
         {
 
         }

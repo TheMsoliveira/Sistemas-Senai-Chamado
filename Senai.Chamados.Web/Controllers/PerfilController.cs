@@ -34,7 +34,7 @@ namespace Senai.Chamados.Web.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    ViewBag.Erro = "Ocorreu um erro. Verifique!";
+                    ViewBag.Erro = "Ocorreu um erro. Verifique digite uma senha válida!";
                     return View();
                 }
                 //obtem claims do usuario
